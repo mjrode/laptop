@@ -1,0 +1,101 @@
+#!/bin/sh
+#load helper functions from main script
+source helper_functions
+
+# TODO- refactor to put the messages/steps needed by the user at the end if no open is set to true
+
+if [ "$1" = "no_open" ]; then
+  open_urls=false
+else
+  open_urls=true
+fi
+
+email="`whoami`@finastra.com"
+
+if ls -al ~/.ssh  | grep id_rsa > /dev/null; then
+  fancy_echo "found exisiting id_rsa key"
+else
+  fancy_echo "Creating id_rsa ssh key for ${email}"
+  ssh-keygen -t rsa -C "$email"
+fi
+
+if ps -p $SSH_AGENT_PID > /dev/null; then
+   fancy_echo "ssh-agent is already running"
+else
+  fancy_echo "Starting ssh-agent"
+  eval `ssh-agent -s`
+fi
+
+if ssh-add -l | grep id_rsa > /dev/null; then 
+  fancy_echo "Key already added to ssh-agent"
+else
+  fancy_echo "Adding id_rsa to ssh-agent"
+  ssh-add ~/.ssh/id_rsa
+fi
+
+fancy_echo "SSH key has been added to your clipboard."
+pbcopy < ~/.ssh/id_rsa.pub
+
+
+fancy_echo "Openining git.malauzai.com, please ensure you are logged in before continuing."
+if $open_urls; then
+  message_user 'If you have logged in to git.malauzai.com successfully enter: y'
+  open 'https://git.malauzai.com/profile/keys'
+  while [ 1 ]
+  do
+    read answer
+    if [ $answer == y -o $answer == Y ]; then
+      break
+    else
+      message_user "Please log in first."
+    fi
+  done
+else
+  message_user 'Open https://git.malauzai.com in your browser'
+fi
+
+message_user "Paste the ssh key that is already copied to your clipboard into the key field. \\nDo not alter the key \\nSet the title to jumpcloud_id_rsa\\nclick add key"
+
+if $open_urls; then
+  message_user 'When you are done enter: y'
+  open 'https://git.malauzai.com/profile/keys'
+  while [ 1 ]
+  do
+    read answer
+    if [ $answer == y -o $answer == Y ]; then
+      break
+    fi
+  done
+else
+  message_user 'Open https://git.malauzai.com/profile/keys in your browswer'
+fi
+
+pbcopy < ~/.ssh/id_rsa.pub
+
+
+
+
+message_user "You will also need to configure this same key for Jumpcloud....\\n opening https://console.jumpcloud.com \\n please ensure you are logged in before continuing."
+
+
+message_user "Paste the ssh key that is already copied to your clipboard into the key field. \\nDo not alter the key \\nSet the title to ssh-rsa\\nclick add save\\n"
+
+if $open_urls; then
+  open 'https://console.jumpcloud.com'
+  message_user 'If you have logged in to jumpcloud successfully enter: y'
+  while [ 1 ]
+  do
+    read answer
+    if [ $answer == y -o $answer == Y ]; then
+      break
+    else
+      message_user "Please log in first."
+    fi
+  done
+else
+  message_user 'Open https://console.jumpcloud.com in your browswer'
+fi
+
+
+
+fancy_echo 'SSH key setup complete!'

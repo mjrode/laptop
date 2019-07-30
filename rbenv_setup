@@ -1,0 +1,28 @@
+#!/bin/sh
+source helper_functions
+
+if ! which rbenv; then
+fancy_echo "Installing rbenv version manager ..."
+brew install rbenv ruby-build
+fi
+
+append_to_bash_profile 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi'
+
+if rbenv versions  | grep 2.4.3 > /dev/null; then
+  fancy_echo "Ruby 2.4.3 is already installed..."
+else 
+  fancy_echo "Installing Ruby 2.4.3"
+  RUBY_CONFIGURE_OPTS=--with-readline-dir="$(brew --prefix readline)" rbenv install 2.4.3
+fi
+
+if ! rbenv global | grep -q 2.4.3; then
+  fancy_echo "Current Ruby version `ruby -v`"
+  rbenv global 2.4.3
+fi
+
+if ! gem list | grep -q "rails (4.2.10)"; then
+  fancy_echo "Installing Rails 4.2.10"
+  gem install rails -v 4.2.10
+fi
+
+rbenv rehash

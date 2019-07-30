@@ -1,0 +1,15 @@
+local:
+  adapter: postgresql
+  database: sami_development
+  username: postgres
+  host: localhost
+development:
+  adapter: postgresql
+  database: sami_development
+  username: postgres
+  host: localhost
+test:
+  adapter: postgresql
+  database: sami_test
+  username: postgres
+  host: localhost

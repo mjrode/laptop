@@ -1,0 +1,89 @@
+#!/bin/sh
+source helper_functions
+
+# Welcome to the malauzai laptop setup script!
+fancy_echo "Starting laptop setup script"
+
+# Create .bin directory if it does not exist
+if [ ! -d "$HOME/.bin/" ]; then
+  fancy_echo "Creating ${HOME/.bin}"
+  mkdir "$HOME/.bin"
+fi
+
+# Create .bash_profile if it does not exist
+if [ ! -f "$HOME/.bash_profile" ]; then
+  fancy_echo "Creating ${HOME/.bash_profile}"
+  touch "$HOME/.bash_profile"
+fi
+
+# shellcheck disable=SC2016
+# Add bin directory to your PATH and store in bash profile
+append_to_bash_profile 'export PATH="$HOME/.bin:$PATH"'
+append_to_bash_profile 'export PATH="/usr/local/sbin:$PATH"'
+
+
+# Create homebrew directory if it does not exist
+# Change ownership to current user or admin group
+HOMEBREW_PREFIX="/usr/local"
+if [ -d "$HOMEBREW_PREFIX" ]; then
+  if ! [ -r "$HOMEBREW_PREFIX" ]; then
+    sudo chown -R "$LOGNAME:admin" /usr/local
+  fi
+else
+  sudo mkdir "$HOMEBREW_PREFIX"
+  sudo chflags norestricted "$HOMEBREW_PREFIX"
+  sudo chown -R "$LOGNAME:admin" "$HOMEBREW_PREFIX"
+fi
+
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+    curl -fsS \
+      'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+
+fi
+
+append_to_bash_profile "# recommended by brew doctor"
+# Add homebrew root directory to path and store in bash profile
+# shellcheck disable=SC2016
+append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"' 1
+
+# Add updated path so it can be used right away
+export PATH="/usr/local/bin:$PATH"
+
+# remove old version of brew cask if found
+if brew list | grep -Fq brew-cask; then
+  fancy_echo "Uninstalling old Homebrew-Cask ..."
+  brew uninstall --force brew-cask
+fi
+
+if [ ! "$1" = "skip_brew" ]; then
+fancy_echo "Updating Homebrew formulae ..."
+brew update --force # https://github.com/Homebrew/brew/issues/1151
+brew bundle --file=- <<EOF
+tap "homebrew/services"
+
+# Unix
+brew "git"
+brew "openssl"
+brew "readline"
+
+# Image manipulation
+brew "imagemagick"
+
+# Programming language prerequisites and package managers
+brew "libyaml" # should come after openssl
+brew "coreutils"
+brew "gnupg"
+
+# Databases
+brew "postgres", restart_service: :changed
+brew "redis", restart_service: :changed
+EOF
+fi
+
+if [ ! -f /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg ]; then 
+  fancy_echo "Install Xcode command line tool headers"
+  sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+fi
+
+fancy_echo "Mac setup script was SUCCESSFUL"

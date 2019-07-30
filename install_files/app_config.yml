@@ -1,0 +1,56 @@
+development:
+  twilio_user: twilio
+  twilio_password: tw!l!0M0nkey
+  twilio_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ops_user: opsmonkey
+  ops_password: xxxx!47h14
+  ops_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  google_api_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  monkey_notifications_url: 'https://alertengine-development.malauzai.com'
+  mz_firebase_server: 'https://alertengine-development.malauzai.com:5100'
+  mz_location_server: 'http://alertengine-development.malauzai.com:5400'
+  m1_webster_bank_adapter_server: 'http://alertengine-development.malauzai.com:5500'
+  m1_webster_bank_adapter_server_dev: 'http://alertengine-development.malauzai.com:5600'
+  m1_ultradata_adapter_server: 'http://alertengine-development.malauzai.com:5700'
+  m1_xpress_deposit_adapter_server: 'http://alertengine-development.malauzai.com:5800'
+
+test:
+  twilio_user: twilio
+  twilio_password: tw!l!xxxxxxx
+  twilio_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ops_user: opsmonkey
+  ops_password: RpF8!xxxxx
+  ops_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  google_api_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  monkey_notifications_url: 'https://alertengine-development.malauzai.com'
+  mz_firebase_server: 'https://alertengine-development.malauzai.com:5100'
+  mz_location_server: 'http://alertengine-development.malauzai.com:5400'
+  m1_webster_bank_adapter_server: 'http://alertengine-development.malauzai.com:5500'
+  m1_webster_bank_adapter_server_dev: 'http://alertengine-development.malauzai.com:5600'
+  m1_ultradata_adapter_server: 'http://alertengine-development.malauzai.com:5700'
+  m1_xpress_deposit_adapter_server: 'http://alertengine-development.malauzai.com:5800'
+  m1_locations_server: 'http://alertengine-development.malauzai.com:5310'
+  m1_phoenix_adapter_horicon_test_server: 'http://alertengine-development.malauzai.com:6200'
+  m1_phoenix_adapter_horicon_live_server: 'http://alertengine-development.malauzai.com:6210'
+  m1_webster_alerts_adapter_server: 'http://alertengine-development.malauzai.com:5900'
+  m1_symantec_adapter: 'https://m1_symantec_adapter_server.malauzai.com'
+  m1_summit_adapter_server: 'http://rsdevelopment.malauzai.com:6930'
+  m1_ipay_adapter_server: 'http://alertengine-development.malauzai.com:5810'
+  m1_horizon_adapter: 'http://test.malauzai.com:5850'
+  m1_xp2_adapter: 'http://test.malauzai.com:6830'
+
+production:
+  twilio_user: twilio
+  twilio_password: tw!l!rrrrrr
+  twilio_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ops_user: opsmonkey
+  ops_password: RpF8!xxxxx
+  ops_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  google_api_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  monkey_notifications_url: 'https://alertengine-development.malauzai.com'
+  mz_firebase_server: 'https://alertengine-development.malauzai.com:5100'
+  mz_location_server: 'http://alertengine-development.malauzai.com:5400'
+  m1_webster_bank_adapter_server: 'http://alertengine-development.malauzai.com:5500'
+  m1_webster_bank_adapter_server_dev: 'http://alertengine-development.malauzai.com:5600'
+  m1_ultradata_adapter_server: 'http://alertengine-development.malauzai.com:5700'
+  m1_xpress_deposit_adapter_server: 'http://alertengine-development.malauzai.com:5800'
