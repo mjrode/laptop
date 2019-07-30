@@ -1,7 +1,7 @@
 #!/bin/bash
-. mac_malauzai
-. rbenv_setup
-. git_config_malauzai
-. ssh_key_config
-. database_setup
-. sami_setup
+. scripts/mac_malauzai
+. scripts/rbenv_setup
+. scripts/git_config_malauzai
+. scripts/ssh_key_config
+. scripts/database_setup
+. scripts/sami_setup
