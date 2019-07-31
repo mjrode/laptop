@@ -123,6 +123,41 @@ sami_setup
 * runs all migrations and seeds the database
 
 
+Known Issues/FAQ
+==================
+
+
+Error when installing Ruby
+---------------------------
+
+```
+You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory.
+```
+
+Changes to your bash_profile and PATH variable were not picked up correctly.
+Typically closing all terminal windows and re-running the script will fix this.
+
+Error when installing Rails
+----------------------------
+
+```
+An error occurred while installing libxml-ruby (3.0.0), and Bundler cannot continue.
+Make sure that `gem install libxml-ruby -v '3.0.0' --source 'https://rubygems.org/'` succeeds before bundling.
+
+```
+Try to run the following commands in your terminal and then rerun the script from the same terminal window.
+```
+sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+```
+
+```
+brew install libxml2
+```
+
+```
+export PATH="/usr/local/opt/libxml2/bin:$PATH"
+```
+
 End Result
 -----------
 At this point you should be able to run SAMI locally with no issues.

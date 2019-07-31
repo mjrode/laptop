@@ -21,6 +21,8 @@ if ! rbenv global | grep -q 2.4.3; then
 fi
 
 if ! gem list | grep -q "rails (4.2.10)"; then
+  export PATH="/usr/local/opt/libxml2/bin:$PATH"
+  # Might need to add install for x-code tools here to prevent error 
   fancy_echo "Installing Rails 4.2.10"
   gem install rails -v 4.2.10
 fi

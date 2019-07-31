@@ -33,6 +33,7 @@ else
   ssh-add ~/.ssh/id_rsa
 fi
 
+### ADD OPTION TO SKIP ON RE RUN
 fancy_echo "SSH key has been added to your clipboard."
 pbcopy < ~/.ssh/id_rsa.pub
 
