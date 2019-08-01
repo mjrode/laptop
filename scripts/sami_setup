@@ -9,7 +9,6 @@ if [ ! -d "$HOME/mz/" ]; then
   mkdir "$HOME/mz"
 fi
 
-
 cd "$HOME/mz"
 
 # #1 = name 2 = git url  3 = gemspec 4 = gemname 5= name to check before install

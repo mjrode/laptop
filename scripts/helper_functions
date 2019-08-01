@@ -12,7 +12,6 @@ message_user() {
   # shellcheck disable=SC2059
   printf "\\nUser Input Needed\\n------------------\\n\\n${fmt}\\n" "$@"
 }
-
 append_to_bash_profile() {
   local text="$1" bash_profile
   local skip_new_line="${2:-0}"
@@ -37,7 +36,7 @@ append_to_bash_profile() {
 gem_install_or_update() {
   if gem list "$1" --installed > /dev/null; then
     fancy_echo "Updating gem: ${@}"
-    gem update "$@"
+    # gem update "$@"
   else
     fancy_echo "Installing gem: ${@}"
     gem install "$@"

@@ -19,7 +19,7 @@ else
   ssh-keygen -t rsa -C "$email"
 fi
 
-if ps -p $SSH_AGENT_PID > /dev/null; then
+if ps --p $SSH_AGENT_PID > /dev/null; then
    fancy_echo "ssh-agent is already running"
 else
   fancy_echo "Starting ssh-agent"

@@ -5,6 +5,3 @@
 . scripts/ssh_key_config
 . scripts/database_setup
 . scripts/sami_setup
-
-
-export PATH=“/usr/local/opt/libxml2/bin:$PATH"

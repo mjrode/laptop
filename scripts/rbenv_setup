@@ -2,13 +2,13 @@
 source helper_functions
 
 if ! which rbenv; then
-fancy_echo "Installing rbenv version manager ..."
-brew install rbenv ruby-build
+  fancy_echo "Installing rbenv version manager ..."
+  brew install rbenv ruby-build
 fi
 
 append_to_bash_profile 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi'
 
-if rbenv versions  | grep 2.4.3 > /dev/null; then
+if rbenv versions  | grep 2.4.3 -q > /dev/null; then
   fancy_echo "Ruby 2.4.3 is already installed..."
 else 
   fancy_echo "Installing Ruby 2.4.3"
@@ -27,4 +27,7 @@ if ! gem list | grep -q "rails (4.2.10)"; then
   gem install rails -v 4.2.10
 fi
 
-rbenv rehash
+if [ ! -d ~/.rbenv/plugins/rbenv-gem-rehash ]; then
+  git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+  rbenv rehash
+fi
