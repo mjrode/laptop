@@ -16,8 +16,8 @@ development:
 
 test:
   twilio_user: twilio
-  twilio_password: tw!l!xxxxxxx
-  twilio_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  twilio_password: tw!l!0M0nkey
+  twilio_auth_token: a8f05b5fe38f466044099f22e5dc6767
   ops_user: opsmonkey
   ops_password: RpF8!xxxxx
   ops_auth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

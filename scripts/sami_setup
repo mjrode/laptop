@@ -56,7 +56,7 @@ fi
 
 certs=("${sami_dir}/config/certificates/*")
 
-while IFS= read -r filename; do 
+while IFS= read -r filename; do
   if containsElement "${filename}" "${certs[@]}"; then
     continue
   fi
@@ -75,11 +75,12 @@ done < $DIR/install_files/certs
 if [ "$1" != 'skip_migrations' ]; then
   rake db:drop
   rake db:create
-
+  # This works for citus
+  # rake db:structure:load DB_STRUCTURE=db/citus_structure.sql
   psql -U postgres -d sami_development -1 -f $HOME/mz/sami/db/structure.sql
 
   rake db:migrate
-  rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' ALERT_SENDER_PWD='KingKong20!'
+  `rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' `ALERT_SENDER_PWD='KingKong20!'
 
   rake db:test:prepare
 fi
