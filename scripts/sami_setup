@@ -2,88 +2,105 @@
 #load helper functions from main script
 source helper_functions
 
-default_directory="$HOME/mz"
-
-if [ ! -d "$HOME/mz/" ]; then
-  fancy_echo "Creating root directory: ${HOME/mz}"
-  mkdir "$HOME/mz"
+# Pass custom_gem as first argument to only install malauzai custom gems. Helpful when switching ruby versions.
+if [ "$1" = "custom_gem" ]; then
+  custom_gem=false
+else
+  custom_gem=true
 fi
 
-cd "$HOME/mz"
+if $custom_gem; then
+  # #1 = name 2 = git url  3 = gemspec 4 = gemname 5= name to check before install
+  install_custom_malauzai_gem soap4r git@git.malauzai.com:infrastructure/soap4r.git malauzai-soap4r.gemspec malauzai-soap4r-2.0.5.gem malauzai-soap4r
 
-# #1 = name 2 = git url  3 = gemspec 4 = gemname 5= name to check before install
-install_custom_malauzai_gem soap4r git@git.malauzai.com:infrastructure/soap4r.git malauzai-soap4r.gemspec malauzai-soap4r-2.0.5.gem malauzai-soap4r
+  install_custom_malauzai_gem wkhtmltoimage-binary git@git.malauzai.com:infrastructure/wkhtmltoimage-binary.git wkhtmltoimage-binary.gemspec malauzai-wkhtmltoimage-binary-0.12.3.gem malauzai-wkhtmltoimage-binary
 
-install_custom_malauzai_gem wkhtmltoimage-binary git@git.malauzai.com:infrastructure/wkhtmltoimage-binary.git wkhtmltoimage-binary.gemspec malauzai-wkhtmltoimage-binary-0.12.3.gem malauzai-wkhtmltoimage-binary
+  install_custom_malauzai_gem wkhtmltopdf-binary git@git.malauzai.com:infrastructure/wkhtmltopdf-binary.git wkhtmltopdf-binary.gemspec malauzai-wkhtmltopdf-binary-0.12.3.gem malauzai-wkhtmltopdf-binary
+else
 
-install_custom_malauzai_gem wkhtmltopdf-binary git@git.malauzai.com:infrastructure/wkhtmltopdf-binary.git wkhtmltopdf-binary.gemspec malauzai-wkhtmltopdf-binary-0.12.3.gem malauzai-wkhtmltopdf-binary
+  default_directory="$HOME/mz"
 
-
-sami_repo="git@git.malauzai.com:infrastructure/sami.git"
-
-if [ ! -d "$HOME/mz/sami" ]; then
-  fancy_echo "Cloning SAMI"
-  git clone $sami_repo
-fi
-
-if [ ! -d "$HOME/mz/sami/log" ]; then
-  mkdir $HOME/mz/sami/log
-fi
-
-
-sami_dir="$HOME/mz/sami"
-
-cd $sami_dir
-
-gem_install_or_update bundler -v 1.9
-bundle install
-
-
-if [ ! -f "$sami_dir/config/database.yml" ]; then
-  fancy_echo "Creating database.yml file"
-  cp $DIR/install_files/database.yml $sami_dir/config/
-fi
-
-if [ ! -f "$sami_dir/config/app_config.yml" ]; then
-  fancy_echo "Creating app_config.yml file"
-  cp $DIR/install_files/app_config.yml $sami_dir/config/
-fi
-
-if [ ! -f "$sami_dir/config/pb" ]; then
-  fancy_echo "Creating pb cert files"
-  cp $DIR/install_files/app_config.yml $sami_dir/config/
-fi
-
-certs=("${sami_dir}/config/certificates/*")
-
-while IFS= read -r filename; do
-  if containsElement "${filename}" "${certs[@]}"; then
-    continue
+  if [ ! -d "$HOME/mz/" ]; then
+    fancy_echo "Creating root directory: ${HOME/mz}"
+    mkdir "$HOME/mz"
   fi
-  if [ ! -f "$sami_dir/config/certificates/$filename" ]; then
-    if  echo $filename | grep crt ; then
-      fancy_echo "creating cert $filename"
-      cp  $DIR/install_files/bob.crt  $sami_dir/config/certificates/$filename
-    else
-      fancy_echo "creating key $filename"
-      cp  $DIR/install_files/bob.key  $sami_dir/config/certificates/$filename
+
+  cd "$HOME/mz"
+
+
+  # #1 = name 2 = git url  3 = gemspec 4 = gemname 5= name to check before install
+  install_custom_malauzai_gem soap4r git@git.malauzai.com:infrastructure/soap4r.git malauzai-soap4r.gemspec malauzai-soap4r-2.0.5.gem malauzai-soap4r
+
+  install_custom_malauzai_gem wkhtmltoimage-binary git@git.malauzai.com:infrastructure/wkhtmltoimage-binary.git wkhtmltoimage-binary.gemspec malauzai-wkhtmltoimage-binary-0.12.3.gem malauzai-wkhtmltoimage-binary
+
+  install_custom_malauzai_gem wkhtmltopdf-binary git@git.malauzai.com:infrastructure/wkhtmltopdf-binary.git wkhtmltopdf-binary.gemspec malauzai-wkhtmltopdf-binary-0.12.3.gem malauzai-wkhtmltopdf-binary
+
+
+  sami_repo="git@git.malauzai.com:infrastructure/sami.git"
+
+  if [ ! -d "$HOME/mz/sami" ]; then
+    fancy_echo "Cloning SAMI"
+    git clone $sami_repo
+  fi
+
+  if [ ! -d "$HOME/mz/sami/log" ]; then
+    mkdir $HOME/mz/sami/log
+  fi
+
+
+  sami_dir="$HOME/mz/sami"
+
+  cd $sami_dir
+
+  gem_install_or_update bundler -v 1.9
+  bundle install
+
+
+  if [ ! -f "$sami_dir/config/database.yml" ]; then
+    fancy_echo "Creating database.yml file"
+    cp $DIR/install_files/database.yml $sami_dir/config/
+  fi
+
+  if [ ! -f "$sami_dir/config/app_config.yml" ]; then
+    fancy_echo "Creating app_config.yml file"
+    cp $DIR/install_files/app_config.yml $sami_dir/config/
+  fi
+
+  if [ ! -f "$sami_dir/config/pb" ]; then
+    fancy_echo "Creating pb cert files"
+    cp $DIR/install_files/app_config.yml $sami_dir/config/
+  fi
+
+  certs=("${sami_dir}/config/certificates/*")
+
+  while IFS= read -r filename; do
+    if containsElement "${filename}" "${certs[@]}"; then
+      continue
     fi
+    if [ ! -f "$sami_dir/config/certificates/$filename" ]; then
+      if  echo $filename | grep crt ; then
+        fancy_echo "creating cert $filename"
+        cp  $DIR/install_files/bob.crt  $sami_dir/config/certificates/$filename
+      else
+        fancy_echo "creating key $filename"
+        cp  $DIR/install_files/bob.key  $sami_dir/config/certificates/$filename
+      fi
+    fi
+  done < $DIR/install_files/certs
+
+
+  if [ "$1" != 'skip_migrations' ]; then
+    rake db:drop
+    rake db:create
+    # This works for citus
+    # rake db:structure:load DB_STRUCTURE=db/citus_structure.sql
+    psql -U postgres -d sami_development -1 -f $HOME/mz/sami/db/structure.sql
+
+    rake db:migrate
+    `rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' `ALERT_SENDER_PWD='KingKong20!'
+
+    rake db:test:prepare
   fi
-done < $DIR/install_files/certs
-
-
-if [ "$1" != 'skip_migrations' ]; then
-  rake db:drop
-  rake db:create
-  # This works for citus
-  # rake db:structure:load DB_STRUCTURE=db/citus_structure.sql
-  psql -U postgres -d sami_development -1 -f $HOME/mz/sami/db/structure.sql
-
-  rake db:migrate
-  `rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' `ALERT_SENDER_PWD='KingKong20!'
-
-  rake db:test:prepare
 fi
-
 # TODO check db connection
 # Check and create sami user as admin
