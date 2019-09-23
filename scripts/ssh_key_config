@@ -26,7 +26,7 @@ else
   eval `ssh-agent -s`
 fi
 
-if ssh-add -l | grep id_rsa > /dev/null; then 
+if ssh-add -l | grep id_rsa > /dev/null; then
   fancy_echo "Key already added to ssh-agent"
 else
   fancy_echo "Adding id_rsa to ssh-agent"
@@ -38,10 +38,10 @@ fancy_echo "SSH key has been added to your clipboard."
 pbcopy < ~/.ssh/id_rsa.pub
 
 
-fancy_echo "Openining git.malauzai.com, please ensure you are logged in before continuing."
+fancy_echo "Opening dev.azure.com, please ensure you are logged in before continuing."
 if $open_urls; then
-  message_user 'If you have logged in to git.malauzai.com successfully enter: y'
-  open 'https://git.malauzai.com/profile/keys'
+  message_user 'If you have logged in to dev.azure.com successfully enter: y'
+  open 'https://dev.azure.com/Malauzai/_usersSettings/keys'
   while [ 1 ]
   do
     read answer
@@ -52,14 +52,14 @@ if $open_urls; then
     fi
   done
 else
-  message_user 'Open https://git.malauzai.com in your browser'
+  message_user 'Open https://dev.azure.com/Malauzai/_usersSettings/keys in your browser'
 fi
 
 message_user "Paste the ssh key that is already copied to your clipboard into the key field. \\nDo not alter the key \\nSet the title to jumpcloud_id_rsa\\nclick add key"
 
 if $open_urls; then
   message_user 'When you are done enter: y'
-  open 'https://git.malauzai.com/profile/keys'
+  open 'https://dev.azure.com/Malauzai/_usersSettings/keys'
   while [ 1 ]
   do
     read answer
@@ -68,7 +68,7 @@ if $open_urls; then
     fi
   done
 else
-  message_user 'Open https://git.malauzai.com/profile/keys in your browswer'
+  message_user 'Open https://dev.azure.com/Malauzai/_usersSettings/keys in your browswer'
 fi
 
 pbcopy < ~/.ssh/id_rsa.pub
