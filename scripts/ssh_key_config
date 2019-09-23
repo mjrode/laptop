@@ -13,7 +13,7 @@ fi
 email="`whoami`@finastra.com"
 
 if ls -al ~/.ssh  | grep id_rsa > /dev/null; then
-  fancy_echo "found exisiting id_rsa key"
+  fancy_echo "found existing id_rsa key"
 else
   fancy_echo "Creating id_rsa ssh key for ${email}"
   ssh-keygen -t rsa -C "$email"

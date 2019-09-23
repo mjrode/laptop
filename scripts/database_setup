@@ -2,7 +2,7 @@
 # load helper functions from main script
 source helper_functions
 
-sym_link=/Users/mike.rode/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+# sym_link=/Users/mike.rode/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 if [ ! -f "$sym_link" ]; then
   fancy_echo "Creating symlink to run postgres at startup"
   ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
@@ -22,7 +22,7 @@ fi
 
 
 
-if ! psql -c '\du' | awk '{print $1}' | grep -q `whoami`; then 
+if ! psql -c '\du' | awk '{print $1}' | grep -q `whoami`; then
   fancy_echo "Creating db `whoami`"
   createdb `whoami`
 fi
