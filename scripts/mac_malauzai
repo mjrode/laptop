@@ -77,12 +77,12 @@ brew "coreutils"
 brew "gnupg"
 
 # Databases
-brew "postgres", restart_service: :changed
+brew "postgresql@9.6", restart_service: :changed
 brew "redis", restart_service: :changed
 EOF
 fi
 
-if [ ! -f /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg ]; then 
+if [ ! -f /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg ]; then
   fancy_echo "Install Xcode command line tool headers"
   sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
 fi

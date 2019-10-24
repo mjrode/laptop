@@ -1,6 +1,9 @@
 #!/bin/sh
 source helper_functions
 
+export PATH="/usr/local/opt/libxml2/bin:$PATH"
+
+
 if ! which rbenv; then
   fancy_echo "Installing rbenv version manager ..."
   brew install rbenv ruby-build
@@ -10,7 +13,7 @@ append_to_bash_profile 'if which rbenv > /dev/null; then eval "$(rbenv init -)";
 
 if rbenv versions  | grep 2.4.3 -q > /dev/null; then
   fancy_echo "Ruby 2.4.3 is already installed..."
-else 
+else
   fancy_echo "Installing Ruby 2.4.3"
   RUBY_CONFIGURE_OPTS=--with-readline-dir="$(brew --prefix readline)" rbenv install 2.4.3
 fi
@@ -22,7 +25,7 @@ fi
 
 if ! gem list | grep -q "rails (4.2.10)"; then
   export PATH="/usr/local/opt/libxml2/bin:$PATH"
-  # Might need to add install for x-code tools here to prevent error 
+  # Might need to add install for x-code tools here to prevent error
   fancy_echo "Installing Rails 4.2.10"
   gem install rails -v 4.2.10
 fi
