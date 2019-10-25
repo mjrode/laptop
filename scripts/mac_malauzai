@@ -77,7 +77,7 @@ brew "coreutils"
 brew "gnupg"
 
 # Databases
-brew "postgresql@9.6", restart_service: :changed
+brew "postgresql@$POSTGRES_VERSION", restart_service: :changed
 brew "redis", restart_service: :changed
 EOF
 fi

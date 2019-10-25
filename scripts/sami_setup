@@ -1,6 +1,7 @@
 #!/bin/sh
 #load helper functions from main script
 source helper_functions
+source script_config
 
 # Pass custom_gem as first argument to only install malauzai custom gems. Helpful when switching ruby versions.
 if [ "$1" = "custom_gem" ]; then
@@ -22,14 +23,12 @@ if $custom_gem; then
   install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai/Malauzai/wkhtmltopdf-binary wkhtmltopdf-binary.gemspec malauzai-wkhtmltopdf-binary-0.12.3.gem malauzai-wkhtmltopdf-binary
 else
 
-  default_directory="$HOME/mz"
-
-  if [ ! -d "$HOME/mz/" ]; then
-    fancy_echo "Creating root directory: ${HOME/mz}"
-    mkdir "$HOME/mz"
+  if [ ! -d "$DEFAULT_DIRECTORY/" ]; then
+    fancy_echo "Creating root directory: ${DEFAULT_DIRECTORY}"
+    mkdir $DEFAULT_DIRECTORY
   fi
 
-  cd "$HOME/mz"
+  cd $DEFAULT_DIRECTORY
 
 
 # #1 = name 2 = git url  3 = gemspec 4 = gemname 5= name to check before install
@@ -42,7 +41,7 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
 
   sami_repo="git@ssh.dev.azure.com:v3/Malauzai/Malauzai/sami"
 
-  if [ ! -d "$HOME/mz/sami" ]; then
+  if [ ! -d "$DEFAULT_DIRECTORY/sami" ]; then
     fancy_echo "Cloning SAMI"
     git clone $sami_repo
   fi
@@ -52,11 +51,11 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
   fi
 
 
-  sami_dir="$HOME/mz/sami"
+  sami_dir="$DEFAULT_DIRECTORY/sami"
 
   cd $sami_dir
 
-  gem_install_or_update bundler -v 1.9
+  gem_install_or_update bundler -v $BUNDLER_VERSION
   bundle install
 
 
@@ -94,17 +93,17 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
 
 
   if [ "$1" != 'skip_migrations' ]; then
-    rake db:drop
-    rake db:create
+    bundle exec rake db:drop
+    bundle exec rake db:create
     # This works for citus
     # rake db:structure:load DB_STRUCTURE=db/citus_structure.sql
     psql -U postgres -d sami_development -1 -f $HOME/mz/sami/db/structure.sql
 
-    rake db:migrate
+    bundle exec rake db:migrate
     `rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' `ALERT_SENDER_PWD='KingKong20!'
 
-    rake db:test:prepare
+    bundle exec rake db:test:prepare
   fi
 fi
-# TODO check db connection
-# Check and create sami user as admin
+
+fancy_echo "SAMI setup script finished"

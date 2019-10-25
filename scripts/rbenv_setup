@@ -1,8 +1,8 @@
 #!/bin/sh
 source helper_functions
+source script_config
 
 export PATH="/usr/local/opt/libxml2/bin:$PATH"
-
 
 if ! which rbenv; then
   fancy_echo "Installing rbenv version manager ..."
@@ -11,23 +11,25 @@ fi
 
 append_to_bash_profile 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi'
 
-if rbenv versions  | grep 2.4.3 -q > /dev/null; then
-  fancy_echo "Ruby 2.4.3 is already installed..."
+if rbenv versions  | grep $RUBY_VERSION -q > /dev/null; then
+  fancy_echo "Ruby $RUBY_VERSION is already installed..."
 else
-  fancy_echo "Installing Ruby 2.4.3"
-  RUBY_CONFIGURE_OPTS=--with-readline-dir="$(brew --prefix readline)" rbenv install 2.4.3
+  fancy_echo `Installing Ruby $($RUBY_VERSION)`
+  RUBY_CONFIGURE_OPTS=--with-readline-dir="$(brew --prefix readline)" rbenv install $RUBY_VERSION
 fi
 
-if ! rbenv global | grep -q 2.4.3; then
+if ! rbenv global | grep -q $RUBY_VERSION; then
   fancy_echo "Current Ruby version `ruby -v`"
-  rbenv global 2.4.3
+  rbenv global $RUBY_VERSION
 fi
 
-if ! gem list | grep -q "rails (4.2.10)"; then
+if ! gem list | grep -q "rails.*$RAILS_VERSION"; then
   export PATH="/usr/local/opt/libxml2/bin:$PATH"
   # Might need to add install for x-code tools here to prevent error
-  fancy_echo "Installing Rails 4.2.10"
-  gem install rails -v 4.2.10
+  fancy_echo "Installing Rails $RAILS_VERSION"
+  gem install rails -v $RAILS_VERSION
+else
+  fancy_echo "Rails $RAILS_VERSION is already installed..."
 fi
 
 if [ ! -d ~/.rbenv/plugins/rbenv-gem-rehash ]; then

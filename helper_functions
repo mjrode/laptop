@@ -12,7 +12,6 @@ message_user() {
   # shellcheck disable=SC2059
   printf "\\nUser Input Needed\\n------------------\\n\\n${fmt}\\n" "$@"
 }
-
 append_to_bash_profile() {
   local text="$1" bash_profile
   local skip_new_line="${2:-0}"
@@ -31,13 +30,15 @@ append_to_bash_profile() {
       fancy_echo "Adding ${text} to ${bash_profile} with a new line"
       printf "\\n%s\\n" "$text" >> "$bash_profile"
     fi
+  else
+    fancy_echo "$1 already added to bash_profile"
   fi
 }
 
 gem_install_or_update() {
   if gem list "$1" --installed > /dev/null; then
     fancy_echo "Updating gem: ${@}"
-    gem update "$@"
+    # gem update "$@"
   else
     fancy_echo "Installing gem: ${@}"
     gem install "$@"
@@ -92,7 +93,7 @@ export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 # shellcheck disable=SC2154
-trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
+# trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
 # Any subsequent(*) commands which fail will cause the shell script to exit immediately
-set -e
+# set -e

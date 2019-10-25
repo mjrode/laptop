@@ -19,10 +19,14 @@ It supports:
 
 Older versions may work but aren't regularly tested.
 
+Shell Script Config
+----------
+The `script_config` file will allow you to set your preferred values for package versions and install directory.
+
 Install
 -------
 
-Clone the repo to your home directory: 
+Clone the repo to your home directory:
 
 ```git clone git@git.malauzai.com:infrastructure/laptop-setup.git```
 
@@ -37,13 +41,15 @@ Optionally, run individual scripts based on your needs:
 
 Ex: Have ruby/rails but all tests are failing locally
 
-```sh
-  sh sami_setup 2>&1 | tee ~/laptop.log
-```
+```sh sh sami_setup 2>&1 | tee ~/laptop.log```
 
 
 Individual Script Info
 ========================
+
+aliases_functions
+---------------
+This adds helpful aliases and functions to your `bash_profile`
 
 
 mac_malauzai
@@ -79,12 +85,12 @@ Databases:
 
 rbenv_setup
 ---------------
-Installs a ruby version manager, ruby, and rails. 
+Installs a ruby version manager, ruby, and rails.
 Also updates your bash_profile path to add rbenv to your PATH.
 
 * [rbenv]() simple and powerful ruby version manager (Not compatible with RVM)
-* [ruby]() installs ruby 2.4.3 which is what SAMI is currently on
-* [rails]() installs rails 4.2.10 which is what SAMI is currently on
+* [ruby]() installs ruby 2.4.3 (Unless version file is changed) which is what SAMI is currently on
+* [rails]() installs rails 4.2.10 (Unless version file is changed) which is what SAMI is currently on
 
 git_config_malauzai
 --------------------
