@@ -1,6 +1,8 @@
-#!/bin/sh
-#load helper functions from main script
-source helper_functions
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $DIR/../util/helper_functions
+source $DIR/../script_config
+
 
 # TODO- refactor to put the messages/steps needed by the user at the end if no open is set to true
 

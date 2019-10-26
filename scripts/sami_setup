@@ -1,7 +1,9 @@
-#!/bin/sh
-#load helper functions from main script
-source helper_functions
-source script_config
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $DIR/../util/helper_functions
+source $DIR/../util/fetch_app_config
+source $DIR/../script_config
+
 
 # Pass custom_gem as first argument to only install malauzai custom gems. Helpful when switching ruby versions.
 if [ "$1" = "custom_gem" ]; then
@@ -46,8 +48,8 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
     git clone $sami_repo
   fi
 
-  if [ ! -d "$HOME/mz/sami/log" ]; then
-    mkdir $HOME/mz/sami/log
+  if [ ! -d "$DEFAULT_DIRECTORY/sami/log" ]; then
+    mkdir $DEFAULT_DIRECTORY/sami/log
   fi
 
 

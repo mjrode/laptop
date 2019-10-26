@@ -1,6 +1,7 @@
-#!/bin/sh
-# load helper functions from main script
-source helper_functions
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $DIR/../util/helper_functions
+source $DIR/../script_config
 
 # sym_link=/Users/mike.rode/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 if [ ! -f "$sym_link" ]; then
@@ -19,8 +20,6 @@ else
   fancy_echo "starting postgresql"
   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 fi
-
-
 
 if ! psql -c '\du' | awk '{print $1}' | grep -q `whoami`; then
   fancy_echo "Creating db `whoami`"

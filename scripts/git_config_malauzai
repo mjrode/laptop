@@ -1,8 +1,10 @@
-#!/bin/sh
-#load helper functions from main script
-source helper_functions
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $DIR/../util/helper_functions
+source $DIR/../script_config
 
-if echo `git credential-osxkeychain | grep -q osxkeychain`; then 
+
+if echo `git credential-osxkeychain | grep -q osxkeychain`; then
   fancy_echo "git credential-osxkeychain already installed"
 else
   fancy_echo "Installing git credential-osxkeychain"

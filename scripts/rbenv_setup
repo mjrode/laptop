@@ -1,6 +1,8 @@
-#!/bin/sh
-source helper_functions
-source script_config
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source $DIR/../util/helper_functions
+source $DIR/../script_config
+
 
 export PATH="/usr/local/opt/libxml2/bin:$PATH"
 

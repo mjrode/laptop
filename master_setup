@@ -1,8 +1,8 @@
 #!/bin/bash
 . scripts/aliases_functions
-. scripts/mac_malauzai # 'skip_brew' - To skip homebrew install
+. scripts/mac_malauzai # To skip homebrew setup and install pass 'skip_brew' to scripts/mac_malauzai
 . scripts/rbenv_setup
 . scripts/git_config_malauzai
-. scripts/ssh_key_config # 'no_open' - To disable opening URLS in chrome
+. scripts/ssh_key_config # To disable script from opening URLS in chrome pass 'no_open' to scripts/ssh_key_config
 . scripts/database_setup
-. scripts/sami_setup # 'skip_migrations' - To disable running SAMI migrations
+. scripts/sami_setup # To prevent SAMI database migrations from running pass 'skip_migrations' to scripts/sami_setup
