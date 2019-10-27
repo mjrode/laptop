@@ -43,11 +43,8 @@ if ! command -v brew >/dev/null; then
 fi
 
 append_to_bash_profile "# recommended by brew doctor"
-# Add homebrew root directory to path and store in bash profile
-# shellcheck disable=SC2016
 append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"' 1
 append_to_bash_profile 'export PATH="/usr/local/opt/libxml2/bin:$PATH"' 1
-# Add updated path so it can be used right away
 export PATH="/usr/local/bin:$PATH"
 
 # remove old version of brew cask if found
@@ -57,30 +54,23 @@ if brew list | grep -Fq brew-cask; then
 fi
 
 if [ ! "$1" = "skip_brew" ]; then
-fancy_echo "Updating Homebrew formulae ..."
-brew update --force # https://github.com/Homebrew/brew/issues/1151
-brew bundle --file=- <<EOF
-tap "homebrew/services"
-
-# Unix
-brew "git"
-brew "openssl"
-brew "readline"
-brew  "libxml2"
-
-# Image manipulation
-brew "imagemagick"
-
-# Programming language prerequisites and package managers
-brew "libyaml" # should come after openssl
-brew "coreutils"
-brew "gnupg"
-
-# Databases
-brew "postgresql@$POSTGRES_VERSION", restart_service: :changed
-brew "redis", restart_service: :changed
-EOF
+  fancy_echo "Updating Homebrew formulae ..."
+  brew update --force # https://github.com/Homebrew/brew/issues/1151
+  brew tap "homebrew/services"
+else
+  fancy_echo "Skipping brew update"
 fi
+
+brew list "git" > /dev/null || brew install "git"
+brew list "openssl" > /dev/null || brew install "openssl"
+brew list "readline" > /dev/null || brew install "readline"
+brew list "libxml2" > /dev/null || brew install "libxml2"
+brew list "imagemagick" > /dev/null || brew install "imagemagick"
+brew list "libyaml" > /dev/null || brew install "libyaml"
+brew list "coreutils" > /dev/null || brew install "coreutils"
+brew list "gnupg" > /dev/null || brew install "gnupg"
+brew list "postgresql@$POSTGRES_VERSION" > /dev/null || brew install "postgresql@$POSTGRES_VERSION", restart_service: :changed
+brew list "redis" > /dev/null || brew install "redis", restart_service: :changed
 
 if [ ! -f /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg ]; then
   fancy_echo "Install Xcode command line tool headers"

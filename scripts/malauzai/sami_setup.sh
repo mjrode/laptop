@@ -1,9 +1,7 @@
-#!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source $DIR/../util/helper_functions
-source $DIR/../util/fetch_app_config
-source $DIR/../script_config
-
+source $DIR/../../util/helper_functions
+source $DIR/../../script_config
+source $DIR/fetch_app_config.sh
 
 # Pass custom_gem as first argument to only install malauzai custom gems. Helpful when switching ruby versions.
 if [ "$1" = "custom_gem" ]; then
@@ -63,18 +61,15 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
 
   if [ ! -f "$sami_dir/config/database.yml" ]; then
     fancy_echo "Creating database.yml file"
-    cp $DIR/install_files/database.yml $sami_dir/config/
+    cp $DIR/../../install_files/database.yml $sami_dir/config/
   fi
 
   if [ ! -f "$sami_dir/config/app_config.yml" ]; then
     fancy_echo "Creating app_config.yml file"
-    cp $DIR/install_files/app_config.yml $sami_dir/config/
+    cp $DIR/../../install_files/app_config.yml $sami_dir/config/
   fi
-
-  if [ ! -f "$sami_dir/config/pb" ]; then
-    fancy_echo "Creating pb cert files"
-    cp $DIR/install_files/app_config.yml $sami_dir/config/
-  fi
+  # get list of certs from preprod
+  ssh preproduction.malauzai.com ls -A  /websites/sami/config/certificates | cat > $DIR/../../install_files/certs
 
   certs=("${sami_dir}/config/certificates/*")
 
@@ -85,13 +80,13 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
     if [ ! -f "$sami_dir/config/certificates/$filename" ]; then
       if  echo $filename | grep crt ; then
         fancy_echo "creating cert $filename"
-        cp  $DIR/install_files/bob.crt  $sami_dir/config/certificates/$filename
+        cp  $DIR/../../install_files/bob.crt  $sami_dir/config/certificates/$filename
       else
         fancy_echo "creating key $filename"
-        cp  $DIR/install_files/bob.key  $sami_dir/config/certificates/$filename
+        cp  $DIR/../../install_files/bob.key  $sami_dir/config/certificates/$filename
       fi
     fi
-  done < $DIR/install_files/certs
+  done < $DIR/../../install_files/certs
 
 
   if [ "$1" != 'skip_migrations' ]; then
@@ -99,13 +94,13 @@ install_custom_malauzai_gem wkhtmltopdf-binary git@ssh.dev.azure.com:v3/Malauzai
     bundle exec rake db:create
     # This works for citus
     # rake db:structure:load DB_STRUCTURE=db/citus_structure.sql
-    psql -U postgres -d sami_development -1 -f $HOME/mz/sami/db/structure.sql
+    psql -U postgres -d sami_development -1 -f $sami_dir/db/structure.sql
 
     bundle exec rake db:migrate
-    `rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' `ALERT_SENDER_PWD='KingKong20!'
-
+    bundle exec rake db:seed ADMIN_USER_LOGIN='admin' ADMIN_USER_PWD='KingKong20!' ALERT_SENDER_LOGIN='admin1' ALERT_SENDER_PWD='KingKong20!'
     bundle exec rake db:test:prepare
   fi
 fi
 
 fancy_echo "SAMI setup script finished"
+cd $ROOT_DIR

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-brew cask spectacle
-brew cask install docker
-flycut

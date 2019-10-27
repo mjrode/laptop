@@ -17,21 +17,11 @@ read -r -d '' RT <<- "EOM"
   }
 EOM
 
-read -r -d '' VIMP <<- "EOM"
-  # vim to preprod file
-  vimp() {
-    ssh -t preproduction.malauzai.com sudo su - mastermonkey -c cd /websites/sami && vim $1
-  }
-EOM
-
 append_to_bash_profile "$RT"
-append_to_bash_profile "$VIMP"
 append_to_bash_profile "bind 'set completion-ignore-case on'"
-append_to_bash_profile 'alias pp="ssh preproduction.malauzai.com"'
 append_to_bash_profile 'alias bp="vim ~/.bash_profile"'
 append_to_bash_profile 'alias sbp="source ~/.bash_profile"'
 append_to_bash_profile "alias rake='bundle exec rake'"
 append_to_bash_profile "alias ssha='ssh-add ~/.ssh/id_rsa'"
-append_to_bash_profile "alias pl='$DEFAULT_DIRECTORY/sami/script/prod_logs/log_tail.sh'"
 append_to_bash_profile 'export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"'
 append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"'

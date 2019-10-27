@@ -1,6 +1,6 @@
 #!/bin/bash
-source $DIR/../util/helper_functions
-source $DIR/../script_config
+source $DIR/../../util/helper_functions
+source $DIR/../../script_config
 
 cd $DEFAULT_DIRECTORY
 if [ -d !adapters ]; then
@@ -46,3 +46,5 @@ do
     git clone git@ssh.dev.azure.com:v3/Malauzai/Malauzai/$repo
   fi
 done
+
+cd $ROOT_DIR

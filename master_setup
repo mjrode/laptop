@@ -1,8 +1,26 @@
+if [ "$1" = "dev_tools" ]; then
+  no_dev_tools=false
+else
+  no_dev_tools=true
+fi
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 #!/bin/bash
-. scripts/aliases_functions
-. scripts/mac_malauzai # To skip homebrew setup and install pass 'skip_brew' to scripts/mac_malauzai
-. scripts/rbenv_setup
-. scripts/git_config_malauzai
-. scripts/ssh_key_config # To disable script from opening URLS in chrome pass 'no_open' to scripts/ssh_key_config
-. scripts/database_setup
-. scripts/sami_setup # To prevent SAMI database migrations from running pass 'skip_migrations' to scripts/sami_setup
+# General scripts
+. scripts/bash_aliases_functions.sh
+. scripts/mac_init.sh 'skip_brew' # To skip homebrew setup and install pass 'skip_brew' to scripts/mac_init.sh
+. scripts/git_config.sh
+. scripts/ssh_agent_rsa_key.sh
+. scripts/postgres_database_setup.sh
+. scripts/rbenv_ruby_rails.sh
+. scripts/nvm_node.sh
+. scripts/bash_aliases_functions.sh
+
+# Developer tools
+$no_dev_tools || . scripts/developer_tools.sh
+
+# Malauzai specific scripts
+. scripts/malauzai/bash_aliases_functions.sh
+. scripts/malauzai/clone_adapters.sh
+. scripts/malauzai/sami_setup.sh 'skip_migrations' #to prevent dropping local SAMI DB
+. scripts/malauzai/azure_jumpcloud_ssh_key_config.sh 'no_open' # To disable script from opening URLS in chrome pass 'no_open'

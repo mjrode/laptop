@@ -1,38 +1,11 @@
-#!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source $DIR/../util/helper_functions
-source $DIR/../script_config
-
-
-# TODO- refactor to put the messages/steps needed by the user at the end if no open is set to true
+source $DIR/../../util/helper_functions
+source $DIR/../../script_config
 
 if [ "$1" = "no_open" ]; then
   open_urls=false
 else
   open_urls=true
-fi
-
-email="`whoami`@finastra.com"
-
-if ls -al ~/.ssh  | grep id_rsa > /dev/null; then
-  fancy_echo "found existing id_rsa key"
-else
-  fancy_echo "Creating id_rsa ssh key for ${email}"
-  ssh-keygen -t rsa -C "$email"
-fi
-
-if [ $(ps ax | grep [s]sh-agent | wc -l) -gt 0 ] ; then
-    echo "ssh-agent is already running"
-else
-    eval $(ssh-agent -s)
-    trap "ssh-agent -k" exit
-fi
-
-if ssh-add -l | grep id_rsa > /dev/null; then
-  fancy_echo "Key already added to ssh-agent"
-else
-  fancy_echo "Adding id_rsa to ssh-agent"
-  ssh-add ~/.ssh/id_rsa
 fi
 
 ### ADD OPTION TO SKIP ON RE RUN
