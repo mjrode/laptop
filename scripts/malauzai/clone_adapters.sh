@@ -2,7 +2,13 @@
 source $DIR/../../util/helper_functions
 source $DIR/../../script_config
 
+if [ ! -d "$DEFAULT_DIRECTORY/" ]; then
+  fancy_echo "Creating root directory: ${DEFAULT_DIRECTORY}"
+  mkdir $DEFAULT_DIRECTORY
+fi
+
 cd $DEFAULT_DIRECTORY
+
 if [ -d !adapters ]; then
   fancy_echo "Creating adapters directory"
   mkdir adapters

@@ -21,7 +21,7 @@ Older versions may work but aren't regularly tested.
 
 Shell Script Config
 ----------
-The `script_config` file will allow you to set your preferred values for package versions and install directory.
+The `script_config` file will allow you to customize versions, personal information, and default directories.
 
 Install
 -------
@@ -33,28 +33,25 @@ Clone the repo to your home directory:
 
 Review the scripts to see what you need (avoid running scripts you haven't read!)
 
-Execute the entire setup script (Only recommended for fresh OSX installs):
+Execute the entire setup script:
 
 ```sh master_setup 2>&1 | tee ~/laptop.log```
 
-Optionally, run individual scripts based on your needs:
+Optionally, run individual scripts based on your needs (All scripts need to be run from the root directory):
 
-Ex: Have ruby/rails but all tests are failing locally
+Ex: To install NVM and Node
 
-```sh sh sami_setup 2>&1 | tee ~/laptop.log```
+```sh scritps/nvm_node.sh 2>&1 | tee ~/laptop.log```
 
 
 Individual Script Info
 ========================
 
-aliases_functions
+mac_init.sh
 ---------------
-This adds helpful aliases and functions to your `bash_profile`
+This will install the basic tools and libraries needed for basic devlopment.
 
-
-mac_malauzai
----------------
-This install the basic tools and libraries needed for all other scripts.
+**Other scripts are dependant on these libraries so this should always be run first.**
 
 
 macOS tools:
@@ -83,47 +80,99 @@ Databases:
 * [Postgres]() for storing relational data
 * [Redis]() for storing key-value data
 
-rbenv_setup
+git_config.sh
+--------------------
+* Sets your git config global username and email.
+* Installs a git helper tool
+
+* [git-credential-osxkeychain]() credential helper to tell Git to remember your username and password every time it talks to Gitlab. (Not critical, we should be using SSH not HTTPS to talk to Gitlab)
+
+ssh_agent_rsa_key.sh
+-----------------
+* Creates an id_rsa ssh key
+* Also installs some ssh-agent.
+
+* [ssh-agent]() a helper program that keeps track of user's identity keys and their passphrases.
+
+postgres_database_setup.sh
+---------------
+* Configures postgres to run on startup and creates default postgres user and database `first.last`.
+* Also adds `pg_start` and `pg_stop` alias to your bash_profile to start and stop postgres.
+
+rbenv_ruby_rails.sh
 ---------------
 Installs a ruby version manager, ruby, and rails.
 Also updates your bash_profile path to add rbenv to your PATH.
 
-* [rbenv]() simple and powerful ruby version manager (Not compatible with RVM)
-* [ruby]() installs ruby 2.4.3 (Unless version file is changed) which is what SAMI is currently on
-* [rails]() installs rails 4.2.10 (Unless version file is changed) which is what SAMI is currently on
+* [NVM]() simple and powerful ruby version manager (Not compatible with RVM)
+* [ruby]() installs ruby, you can specify the version in the script_config file
+* [rails]() installs rails, you can specify the version in the script_config file
 
-git_config_malauzai
---------------------
-Sets your git config global username to use your finastra user name and email.
-Installs a git helper tool
-
-* [git-credential-osxkeychain]() credential helper to tell Git to remember your username and password every time it talks to Gitlab. (Not critical, we should be using SSH not HTTPS to talk to Gitlab)
-
-ssh_key_config
+nvm_node.sh
 ---------------
-Creates an id_rsa ssh key tied to your finastra email, and walks you through how to add this key to Jumpcloud and Gitlab (Required for SAMI)
-Also installs some SSH tools.
+Installs a node version manager and node.
+Also updates your bash_profile path to add NVM to your PATH.
 
-Can pass run script with `sh ssh_key_config no_open` to stop the script from opening your browser to Jumpcloud and Gitlab.
+* [NVM]() Node Version Manager
+* [node]() installs node, you can specify the version in the script_config file
 
-* [ssh-agent]() a helper program that keeps track of user's identity keys and their passphrases.
-
-database_setup
+bash_aliases_functions.sh
 ---------------
-Configures postgres to run on startup and creates default postgres user and database `first.last`.
-Also adds `pg_start` and `pg_stop` alias to your bash_profile to start and stop postgres.
+* This adds helpful aliases and functions to your `bash_profile`
 
-sami_setup
+
+Developer Tools
+================
+A collection of programs, tools, and packages that I install on every machine.
+These are all installed via Homebrew
+
+These will only be installed if you pass the option `dev_tools` to `sh master_setup`
+ ```
+ sh master_setup dev_tools
+ ```
+* [Flycut]() Flycut is a clean and simple clipboard manager for developers.
+* [Spectacle]() Spectacle allows you to organize your windows without using a mouse.
+* [iTerm2]() iTerm2 is a replacement for Terminal and the successor to iTerm.
+* [TablePlus]() Modern, native client with intuitive GUI tools to create, access, query & edit multiple relational databases
+* [Docker]() Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.
+* [Apptivate]() With Apptivate, you can create global hotkeys to: Launch, activate, hide and quick peek applications; Execute scripts; Run Automator workflows; Instantly access Files and Folders.
+* [Google Chrome]() Google Chrome is a cross-platform web browser developed by Google.
+* [Visual Studio Code]() Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications.
+* [Postman]() Simplify workflows and create better APIs – faster – with Postman, a collaboration platform for API development.
+* [Evernote]() Evernote is an app designed for note taking, organizing, task management, and archiving.
+* [Fork]() A fast and friendly git client for Mac and Windows.
+* [aText]() aText accelerates your typing by replacing abbreviations with frequently used phrases you define.
+* [Itsycal]() Itsycal is a tiny calendar for your Mac’s menu bar.
+
+
+
+Malauzai specific scripts
+=========================
+
+These scripts are to install Malauzai repos, applications, and applicable settings.
+
+They are all located in the `scripts/malauzai` directory
+
+bash_aliases_functions.sh
 ---------------
-* Creates root directory `mz` to store all malauzai git repos
+* This adds helpful aliases and functions to your `bash_profile`
+
+clone_adapters.sh
+---------------
+* This will get a current list of all of our adapters from preproduction and then clone them locally.
+* Creates a root directory based on the path specified in `script_config` to store all malauzai git repos
+
+sami_setup.sh
+---------------
+* Creates a root directory based on the path specified in `script_config` to store all malauzai git repos
 * Installs three custom gems SAMI depends on
   1. malauzai-soap4r
   2. wkhtmltoimage-binary
   3. wkhtmltopdf-binary
-* Clones SAMI repo into `~/mz/sami`
+* Clones SAMI repo
 * Creates the following gitignored files with no sensitive information
   1. database.yml
-  2. config.yml
+  2. app_config.yml
   3. certificates and keys
 * creates `sami_development` and `sami_test` database
 * runs all migrations and seeds the database
